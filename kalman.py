@@ -2,7 +2,7 @@ import numpy as np
 
 class KalmanFilter(object):
 
-	def __init__(self, dt = 1, stateVariance = 1000, measurementVariance = .0001):
+	def __init__(self, dt = 1, stateVariance = 0.1, measurementVariance = 0.01):
 
 		super(KalmanFilter, self).__init__()
 		self.stateVariance = stateVariance

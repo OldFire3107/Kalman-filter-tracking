@@ -11,18 +11,15 @@ class Tracks(object):
         self.KF = KalmanFilter()
         self.KF.predict()
         self.KF.correct(np.matrix(detection).reshape(3, 1))
-        self.trace = deque(maxlen=20)
+        self.trace = deque()
         self.prediction = detection.reshape(1,3)
         self.trackID = trackID
         self.skipped = 0
 
     def predict(self, detection):
         self.prediction = np.array(self.KF.predict()).reshape(1,3)
-        self.KF.correct(np.correct(np.matrix(detection).reshape(3,1)))
+        self.KF.correct(np.matrix(detection).reshape(3,1))
 
     def predictNoDetect(self):
         self.prediction = np.array(self.KF.predict()).reshape(1,3)
         self.KF.update()
-
-class Tracker(object):
-    pass
