@@ -22,7 +22,7 @@ with open('radar_dump.csv') as csv_file:
 
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
-    ax.scatter(Lx[:100], Ly[:100], Lz[:100], c = 'r', marker = 'o',)
+    ax.scatter(Lx[100:700], Ly[100:700], Lz[100:700], c = 'r', marker = 'o',)
 
     ax.set_xlabel('X')
     ax.set_ylabel('Y')
