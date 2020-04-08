@@ -86,10 +86,10 @@ for measurements in data:
             
         else:
             x = assignment[i]
-            print(tracks[i].prediction, i)
+            # print(tracks[i].prediction, i)
             tracks[i].predict(measurements[x*3 : x*3 + 3])
             tracks[i].trace.append(tracks[i].prediction)
-            print(tracks[i].prediction, i)
+            # print(tracks[i].prediction, i)
 
     popcount = 0
     i = 0
