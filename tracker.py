@@ -23,3 +23,6 @@ class Tracks(object):
     def predictNoDetect(self):
         self.prediction = np.array(self.KF.predict()).reshape(1,3)
         self.KF.update()
+    
+    def CheckMeasurement(self, cost):
+        return self.KF.measurementProbability(cost)

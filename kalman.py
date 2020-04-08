@@ -55,3 +55,16 @@ class KalmanFilter(object):
 	def update(self):
 		self.state = self.predictedState
 		self.erroCov = self.predictedErrorCov
+
+	def measurementProbability(self, cost): # For now it returns only whther it can be counted or not.
+		R = 1000 * np.matrix([	
+			self.erroCov.item(0),
+			self.erroCov.item(7),
+			self.erroCov.item(14)
+		])
+		Rcost = np.linalg.norm(R)
+
+		if cost < Rcost:
+			return True
+		
+		return False
