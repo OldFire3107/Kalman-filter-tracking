@@ -11,9 +11,8 @@ from tracker import Tracks
 import time
 
 data = []
-threshold = 10
-notTrackingLimit = 10
-minPoints = 60
+notTrackingLimit = 6
+minPoints = 125
 
 with open('radar_dump.csv') as csv_file:
     csv_reader = csv.reader(csv_file, delimiter = ',')
@@ -63,9 +62,15 @@ for measurements in data:
         if cost[i]:
             index = np.argmin(cost[i])
             if tracks[i].CheckMeasurement(cost[i][index]):
-                assignment[i] = index
+                if index not in assignment:
+                    assignment[i] = index
+                else:
+                    ind = assignment.index(index)
+                    if cost[i][index] < cost[ind][index]:
+                        assignment[ind] = -1
+                        assignment[i] = index
 
-    if len(tracks) < int(M /3):
+    if N < int(M /3):
         for i in range(int(M/3)):
             if i not in assignment:
                 track = Tracks(measurements[3*i:3*i+3], tracking)
@@ -87,8 +92,13 @@ for measurements in data:
             print(tracks[i].prediction, i)
 
     popcount = 0
+    i = 0
     while i < (len(assignment) - popcount):
-        if notTracking[i] > notTrackingLimit:
+        if notTracking[i] > notTrackingLimit or tracks[i].prediction.item(0) > 1.15 \
+           or tracks[i].prediction.item(1) > 1.15 or tracks[i].prediction.item(2) > 1.15 \
+           or tracks[i].prediction.item(0) < -1.15 or tracks[i].prediction.item(1) < -1.15 \
+           or tracks[i].prediction.item(2) < -1.15 :
+
             track = tracks.pop(i)
             notTracking.pop(i)
             assignment.pop(i)
@@ -131,7 +141,7 @@ for measurements in data:
 #     time.sleep(0.1)
 #     plt.close()
 
-print("found %ld flight paths", len(X))
+print("found", len(X),"flight paths")
 
 for i in range(len(X)):
     fig = plt.figure(i+1)
