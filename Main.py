@@ -41,13 +41,13 @@ for measurements in data:
     #     Lz.append(measurements[2])
 
     measurements = np.array(measurements)
-    # if len(tracks) == 0:
-    while len(tracks) < int(len(measurements) / 3):
-        track = Tracks(measurements[count:count+3], tracking)
-        tracking += 1
-        tracks.append(track)
-        count += 3
-        notTracking.append(0)
+    if len(tracks) == 0:
+        while len(tracks) < int(len(measurements) / 3):
+            track = Tracks(measurements[count:count+3], tracking)
+            tracking += 1
+            tracks.append(track)
+            count += 3
+            notTracking.append(0)
     
     N = len(tracks)
     M = int(len(measurements))
@@ -64,6 +64,15 @@ for measurements in data:
             index = np.argmin(cost[i])
             if tracks[i].CheckMeasurement(cost[i][index]):
                 assignment[i] = index
+
+    if len(tracks) < int(M /3):
+        for i in range(int(M/3)):
+            if i not in assignment:
+                track = Tracks(measurements[3*i:3*i+3], tracking)
+                tracking += 1
+                tracks.append(track)
+                count += 3
+                notTracking.append(0)
 
     for i in range(len(assignment)):
         if assignment[i] == -1:
