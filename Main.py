@@ -71,7 +71,6 @@ for measurements in data:
                 track = Tracks(measurements[3*i:3*i+3], tracking)
                 tracking += 1
                 tracks.append(track)
-                count += 3
                 notTracking.append(0)
 
     for i in range(len(assignment)):
